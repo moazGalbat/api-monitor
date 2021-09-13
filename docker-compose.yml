@@ -37,6 +37,11 @@ services:
       PORT: 3000
       MONGO_URL: 'mongodb://admin:Passw0rd@primary-database:27017/api-monitor'
       JWT_SECRET: JWT_SECRET
+      MAILER_CONFIG: >
+        {
+          "username": "",
+          "password": ""
+        }
 
     command: ['npm', 'run', 'dev']
 
