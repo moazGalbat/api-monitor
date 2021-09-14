@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const Check = require('../models/Check');
 const { checkHandler, getReportBy } = require('../helpers/checkHelpers');
 const { NOT_FOUND_ERR } = require('../helpers/commonErrors');

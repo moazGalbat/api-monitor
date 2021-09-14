@@ -143,7 +143,7 @@ const checkHandler = async (checkId) => {
   }).catch(async (err) => {
     logger.error(err);
     await updateCheckOnFail(checkInstance, err.duration);
-    logger.info(`url is down : ${checkInstance.id}, response status: ${response.status}`);
+    logger.info(`url is down : ${checkInstance.id}, response status: ${err.status}`);
     if (await shouldSendNotification(checkInstance, 'down')) {
       sendNotifications(checkInstance);
     }
