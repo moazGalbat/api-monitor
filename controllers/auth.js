@@ -40,7 +40,7 @@ const signup = async (req, res, next) => {
       subject: 'confirm your mail',
       body: confirmationMailBody({ name, confirmationCode: code }),
     });
-    res.status(200).json({ message: "User created successfully. Confirmation mail Sent. Please verify your email before login." });
+    res.status(200).json({ message: 'User created successfully. Confirmation mail Sent. Please verify your email before login.' });
   } catch (err) {
     next(err);
   }
@@ -50,7 +50,7 @@ const mailConfirmation = async (req, res, next) => {
   try {
     const { confirmationCode } = req.params;
     const user = await UserModel.findOne({ code: confirmationCode }).exec();
-    if (!user) throw NOT_FOUND_ERR("User")
+    if (!user) throw NOT_FOUND_ERR('User');
     user.status = 'Active';
     await user.save();
     res.status(200).json({ message: 'Your mail is verified' });

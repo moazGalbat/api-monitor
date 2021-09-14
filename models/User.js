@@ -2,7 +2,8 @@ const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const util = require('util');
 const jwt = require('jsonwebtoken');
-const {JWT_SECRET: jwtSecretKey} = require('../config')
+const { JWT_SECRET: jwtSecretKey } = require('../config');
+
 const saltRounds = 10;
 
 const sign = util.promisify(jwt.sign);
@@ -12,7 +13,7 @@ const userSchema = new Schema(
   {
     name: { type: String },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true},
+    password: { type: String, required: true },
     status: {
       type: String,
       enum: ['Pending', 'Active'],
