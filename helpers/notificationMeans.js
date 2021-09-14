@@ -1,9 +1,10 @@
 const axios = require('axios');
 const { sendMail } = require('../mail/nodmaile');
+const { logger } = require('../logger/logger');
 
 const sendToWebhook = ({ url, data }) => axios.post(url, { ...data })
-  .then((res) => console.info(`sent to webhook${url}`))
-  .catch((err) => console.error(err));
+  .then((res) => logger.info(`sent to webhook: ${url}`))
+  .catch((err) => logger.error(`webhook error: ${err}`));
 
 const notificationMeans = {
   mail: sendMail,

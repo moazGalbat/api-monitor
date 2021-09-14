@@ -6,6 +6,7 @@ const User = require('../models/User');
 const axios = require('./axiosInstance');
 const notificationMeans = require('./notificationMeans');
 const { linkAvilabiltyMailBody } = require('../mail/mailTemplates');
+const { logger } = require('../logger/logger');
 
 const updateCheckOnSuccess = async (checkInstance, responseTime) => Check.updateOne(
   { _id: checkInstance._id }, {
@@ -86,10 +87,12 @@ const getUrlFromCheck = (checkInstance) => {
 
 const sendNotifications = async (checkInstance) => {
   const user = await User.findById(checkInstance.userId);
+  logger.info(`mail should be sent: ${user.email}, status: ${checkInstance.currentStatus}`);
   notificationMeans.mail({ email: user.email, subject: 'Url Alert', body: linkAvilabiltyMailBody(checkInstance) });
-  if (checkInstance.webhook) {
+  if (checkInstance.webHook) {
+    logger.info(`post to webhook: ${checkInstance.webHook}, status: ${checkInstance.currentStatus}`);
     await notificationMeans.webhook({
-      url: getUrlFromCheck(checkInstance),
+      url: checkInstance.webHook,
       data: {
         name: checkInstance.name,
         url: getUrlFromCheck(checkInstance),
@@ -119,26 +122,28 @@ const checkHandler = async (checkId) => {
     if (_.get(checkInstance, 'assert.statusCode')) {
       if (response.status === _.get(checkInstance, 'assert.statusCode')) {
         await updateCheckOnSuccess(checkInstance, response.duration);
+        logger.info(`url is up : ${checkInstance.id}, response status: ${response.status}`);
         if (await shouldSendNotification(checkInstance, 'up')) {
           sendNotifications(checkInstance);
         }
       } else {
         await updateCheckOnFail(checkInstance, response.duration);
+        logger.info(`url is down : ${checkInstance.id}, response status: ${response.status}`);
         if (await shouldSendNotification(checkInstance, 'down')) {
           sendNotifications(checkInstance);
         }
       }
     } else {
       await updateCheckOnSuccess(checkInstance, response.duration);
-      console.info(checkInstance.currentStatus, response.status);
+      logger.info(`url is up : ${checkInstance.id}, response status: ${response.status}`);
       if (await shouldSendNotification(checkInstance, 'up')) {
         sendNotifications(checkInstance);
       }
     }
   }).catch(async (err) => {
-    console.error(err);
-    console.info(checkInstance.currentStatus, err.status);
+    logger.error(err);
     await updateCheckOnFail(checkInstance, err.duration);
+    logger.info(`url is down : ${checkInstance.id}, response status: ${response.status}`);
     if (await shouldSendNotification(checkInstance, 'down')) {
       sendNotifications(checkInstance);
     }
@@ -155,7 +160,7 @@ const handleChecksOnServerBoot = async () => {
       await check.save();
     });
   } catch (error) {
-    console.log(error);
+    logger.log(error);
   }
 };
 

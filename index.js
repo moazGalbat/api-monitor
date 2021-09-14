@@ -6,6 +6,7 @@ const authRouter = require('./routes/auth');
 const checkRouter = require('./routes/check');
 const authMiddleware = require('./middleware/authMiddleware');
 const { handleChecksOnServerBoot } = require('./helpers/checkHelpers');
+const { logger } = require('./logger/logger');
 
 databaseConnection();
 
@@ -20,5 +21,5 @@ app.use('/checks', authMiddleware, checkRouter);
 app.use(errorMiddleware);
 
 app.listen(port, () => {
-  console.log(`Server is listening on Port ${port}`);
+  logger.info(`Server is listening on Port ${port}`);
 });

@@ -4,6 +4,7 @@ const { checkHandler, getReportBy } = require('../helpers/checkHelpers');
 const { NOT_FOUND_ERR } = require('../helpers/commonErrors');
 const { checkSchema } = require('../schemas/checkSchema');
 const CustomError = require('../helpers/CustomError');
+const { logger } = require('../logger/logger');
 
 const createCheck = async (req, res, next) => {
   try {
@@ -18,9 +19,11 @@ const createCheck = async (req, res, next) => {
     const handlerInterval = setInterval(checkHandler, check.interval * 60 * 1000, check._id);
     check.intervalId = handlerInterval;
     await check.save();
-    res.json({ message: 'check created', checkId: check._id });
+
+    logger.info(`new check creation: ${check}`);
+
+    res.json({ message: 'Check created and monitoring started', checkId: check._id });
   } catch (error) {
-    console.error(error);
     next(error);
   }
 };
@@ -31,7 +34,6 @@ const getChecks = async (req, res, next) => {
     const checks = await Check.find({ userId }, 'name url protocol path port webhook timout interval threshold authentication httpHeaders assert tags ignoreSSL isStopped').exec();
     res.status(200).json(checks);
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -57,7 +59,6 @@ const updateCheck = async (req, res, next) => {
     }
     res.json({ message: 'check updated' });
   } catch (error) {
-    console.error(error);
     next(error);
   }
 };
@@ -72,7 +73,6 @@ const deleteCheck = async (req, res, next) => {
     await Check.deleteOne({ _id: id });
     res.json({ message: 'deleted successfully' });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -88,7 +88,6 @@ const pauseCheck = async (req, res, next) => {
     await check.save();
     res.json({ message: `check: ${id} paused successfully` });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -100,7 +99,6 @@ const report = async (req, res, next) => {
     const reports = await getReportBy({ id, tag, userId });
     res.json({ reports });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };

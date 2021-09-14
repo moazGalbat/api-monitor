@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const { mailUsername, mailPassword } = require('../config');
+const { logger } = require('../logger/logger');
 
 const transport = nodemailer.createTransport({
   service: 'Gmail',
@@ -25,7 +26,7 @@ const sendMail = ({
     },
   }).catch((err) => {
     // TODO: retryLogic
-    console.log(err);
+    logger.error();
   });
 };
 
