@@ -5,4 +5,11 @@ const confirmationMailBody = ({ name, confirmationCode }) => `</div>
             <a href=http://localhost:3000/confirm/${confirmationCode}> Click here</a>
             </div>`;
 
-module.exports = { confirmationMailBody };
+const linkAvilabiltyMailBody = ({
+  name, url, currentStatus,
+}) => ` </div>
+<h1>Avilabity Alert</h1>
+<h2>check: ${name}, url: ${url}</h2>
+<p>The above check is currently ${currentStatus}</p>
+</div>`;
+module.exports = { confirmationMailBody, linkAvilabiltyMailBody };
