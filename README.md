@@ -12,8 +12,8 @@ Users can get detailed uptime reports about their checks availability, average r
 Users can group their checks by tags and get reports by tag.
 
 # how-to-start
-1- Pull the project locally.
-2- Add your mail config and other needed env in docker-compose.yml.
-3- docker-compose up.
-4- You can play using the postman collection that you can found in the repo.
+* Pull the project locally.
+* Add your mail config and other needed env in docker-compose.yml.
+* docker-compose up.
+* You can play using the postman collection that you can found in the repo.
 
