@@ -1,0 +1,41 @@
+{
+  "name": "api-monitor",
+  "version": "1.0.0",
+  "description": "The main idea of the task is to build an uptime monitoring RESTful API server which allows authorized users to enter URLs they want monitored, and get detailed uptime reports about their availability, average response time, and total uptime/downtime.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon .",
+    "dev": "nodemon --inspect=0.0.0.0:9229 .",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moazGalbat/api-monitor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moazGalbat/api-monitor/issues"
+  },
+  "homepage": "https://github.com/moazGalbat/api-monitor#readme",
+  "dependencies": {
+    "@babel/core": "^7.15.5",
+    "axios": "^0.21.4",
+    "babel-jest": "^27.2.0",
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.1",
+    "joi": "^17.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.0.5",
+    "nodemailer": "^6.6.3",
+    "nodemon": "^2.0.12",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.2",
+    "jest": "^27.2.0"
+  }
+}
