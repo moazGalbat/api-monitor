@@ -1,4 +1,4 @@
-const MAILER_CONFIG = JSON.parse(process.env.MAILER_CONFIG || {});
+const MAILER_CONFIG = JSON.parse(process.env.MAILER_CONFIG || '{}');
 
 const config = {
   port: process.env.PORT || '3030',
