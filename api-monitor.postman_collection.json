@@ -1,0 +1,333 @@
+{
+	"info": {
+		"_postman_id": "d3eb1a2e-728e-4049-a31a-1c4ad7c39777",
+		"name": "api-monitor",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "signup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const {token} = pm.response.json();",
+							"pm.environment.set('accessToken', token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"moaz\",\n    \"email\": \"mail@mail.com\",\n    \"password\": \"P@ssw0rd\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/signup",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const {token} = pm.response.json();",
+							"pm.environment.set('accessToken', token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"moaz\",\n    \"email\": \"mail@mail.com\",\n    \"password\": \"P@ssw0rd\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/signup",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/checks",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"checks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checks report",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/checks/report?tag=moaz",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"checks",
+						"report"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "613cdfa18848f671c74b4345",
+							"disabled": true
+						},
+						{
+							"key": "tag",
+							"value": "moaz"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "stop check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{accessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"moaz\",\n    \"email\": \"mail@mail.com\",\n    \"password\": \"P@ssw0rd\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/checks/613cdfa18848f671c74b434",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"checks",
+						"613cdfa18848f671c74b434"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{accessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"moaz\",\n    \"url\": \"https://sandbox.npkn.net\",\n    \"protocol\": \"https\",\n    \"path\": \"/a6667b401b\",\n    \"port\": 443,\n    \"timeout\": 30,\n    \"interval\": 0.1,\n    \"threshold\": 1,\n    \"ignoreSSL\" : true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/checks",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"checks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "put check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{accessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"moaz\",\n    \"url\": \"https://sandbox.npkn.net\",\n    \"protocol\": \"https\",\n    \"path\": \"/a6667b401b\",\n    \"port\": 443,\n    \"timeout\": 20,\n    \"interval\": 1,\n    \"threshold\": 5,\n    \"ignoreSSL\" : true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/checks/613fa1ef48b92ff5f6c303f8",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"checks",
+						"613fa1ef48b92ff5f6c303f8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/checks/613ce12d2734cefca0fdfbcb",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"checks",
+						"613ce12d2734cefca0fdfbcb"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
