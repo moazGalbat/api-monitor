@@ -7,6 +7,7 @@ const axios = require('./axiosInstance');
 const notificationMeans = require('./notificationMeans');
 const { linkAvilabiltyMailBody } = require('../mail/mailTemplates');
 const { logger } = require('../logger/logger');
+const { checkForThreshold } = require('./helpersDependancies');
 
 const updateCheckOnSuccess = async (checkInstance, responseTime) => Check.updateOne(
   { _id: checkInstance._id }, {
@@ -17,7 +18,7 @@ const updateCheckOnSuccess = async (checkInstance, responseTime) => Check.update
       currentStatus: 'up',
     },
     $push: {
-      histroy: new Date(),
+      history: new Date(),
       responseTimes: responseTime,
     },
   },
@@ -33,7 +34,7 @@ const updateCheckOnFail = async (checkInstance, responseTime) => Check.updateOne
       currentStatus: 'down',
     },
     $push: {
-      histroy: new Date(),
+      history: new Date(),
       responseTimes: responseTime,
     },
   },
@@ -58,18 +59,6 @@ const getReportBy = async ({ id, tag, userId }) => {
   ]);
 };
 
-const checkForThreshold = async (checkInstance) => {
-  if (checkInstance.threshold === 1) return true;
-  if (checkInstance.threshold === checkInstance.alerts) {
-    checkInstance.alerts = 1;
-    await checkInstance.save();
-    return true;
-  }
-  checkInstance.alerts += 1;
-  await checkInstance.save();
-  return false;
-};
-
 const shouldSendNotification = async (checkInstance, newStatus) => {
   if (checkInstance.currentStatus !== newStatus) {
     return newStatus === 'up' ? true : checkForThreshold(checkInstance);
@@ -78,8 +67,8 @@ const shouldSendNotification = async (checkInstance, newStatus) => {
 };
 
 const getUrlFromCheck = (checkInstance) => {
-  const Url = new URL(`${checkInstance.url}`);
-  Url.protocol = checkInstance.protocol;
+  const Url = new URL(`${checkInstance.protocol}://${checkInstance.url}`);
+  Url.protocol = checkInstance.protocol || '';
   Url.pathname = checkInstance.path || '';
   Url.port = checkInstance.port;
   return Url.href;
@@ -143,7 +132,7 @@ const checkHandler = async (checkId) => {
   }).catch(async (err) => {
     logger.error(err);
     await updateCheckOnFail(checkInstance, err.duration);
-    logger.info(`url is down : ${checkInstance.id}, response status: ${response.status}`);
+    logger.info(`url is down : ${checkInstance.id}, response status: ${err.status}`);
     if (await shouldSendNotification(checkInstance, 'down')) {
       sendNotifications(checkInstance);
     }
@@ -168,4 +157,6 @@ module.exports = {
   checkHandler,
   getReportBy,
   handleChecksOnServerBoot,
+  getUrlFromCheck,
+  shouldSendNotification,
 };

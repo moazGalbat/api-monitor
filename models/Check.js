@@ -36,7 +36,7 @@ const CheckSchema = new Schema(
     alerts: { type: Number, default: 1 },
     history: [Date],
     currentStatus: { type: String, default: 'up' },
-    outages: { type: Number },
+    outages: { type: Number, default: 0 },
     responseTimes: [Number],
     upTime: { type: Number, default: 0 },
     downTime: { type: Number, default: 0 },
