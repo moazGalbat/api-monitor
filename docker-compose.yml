@@ -1,9 +1,18 @@
 version: '3'
 
 services:
+  fix-mongodb-permissions:
+    image: 'alpine:3.10'
+    user: root
+    command: chown -R 1001:1001 /bitnami
+    volumes:
+      - "mongo-data:/bitnami"
+
   primary-database:
     image: 'bitnami/mongodb:latest'
     restart: on-failure
+    depends_on:
+      - fix-mongodb-permissions
     networks:
       - general-network
     healthcheck:
